@@ -1,30 +1,30 @@
-const db = require('../../database');
-const { InternalServerError } = require('../erros');
+const db = require("../../database");
+const { InternalServerError } = require("../erros");
 
 module.exports = {
-  adiciona: usuario => {
+  adiciona: (usuario) => {
     return new Promise((resolve, reject) => {
       db.run(
         `
           INSERT INTO usuarios (
             nome,
             email,
-            senha
+            senhaHash
           ) VALUES (?, ?, ?)
         `,
-        [usuario.nome, usuario.email, usuario.senha],
-        erro => {
+        [usuario.nome, usuario.email, usuario.senhaHash],
+        (erro) => {
           if (erro) {
-            reject(new InternalServerError('Erro ao adicionar o usuário!'));
+            reject(new InternalServerError("Erro ao adicionar o usuário!"));
           }
 
           return resolve();
-        }
+        },
       );
     });
   },
 
-  buscaPorId: id => {
+  buscaPorId: (id) => {
     return new Promise((resolve, reject) => {
       db.get(
         `
@@ -35,16 +35,16 @@ module.exports = {
         [id],
         (erro, usuario) => {
           if (erro) {
-            return reject('Não foi possível encontrar o usuário!');
+            return reject("Não foi possível encontrar o usuário!");
           }
 
           return resolve(usuario);
-        }
+        },
       );
     });
   },
 
-  buscaPorEmail: email => {
+  buscaPorEmail: (email) => {
     return new Promise((resolve, reject) => {
       db.get(
         `
@@ -55,11 +55,11 @@ module.exports = {
         [email],
         (erro, usuario) => {
           if (erro) {
-            return reject('Não foi possível encontrar o usuário!');
+            return reject("Não foi possível encontrar o usuário!");
           }
 
           return resolve(usuario);
-        }
+        },
       );
     });
   },
@@ -72,15 +72,15 @@ module.exports = {
         `,
         (erro, usuarios) => {
           if (erro) {
-            return reject('Erro ao listar usuários');
+            return reject("Erro ao listar usuários");
           }
           return resolve(usuarios);
-        }
+        },
       );
     });
   },
 
-  deleta: usuario => {
+  deleta: (usuario) => {
     return new Promise((resolve, reject) => {
       db.run(
         `
@@ -88,13 +88,13 @@ module.exports = {
           WHERE id = ?
         `,
         [usuario.id],
-        erro => {
+        (erro) => {
           if (erro) {
-            return reject('Erro ao deletar o usuário');
+            return reject("Erro ao deletar o usuário");
           }
           return resolve();
-        }
+        },
       );
     });
-  }
+  },
 };
