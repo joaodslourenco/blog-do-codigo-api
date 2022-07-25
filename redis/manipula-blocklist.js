@@ -1,9 +1,9 @@
-const blacklist = require("./blacklist");
+const blocklist = require("./blocklist");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const { createHash } = require("crypto");
-const existsAsync = promisify(blacklist.exists).bind(blacklist);
-const setAsync = promisify(blacklist.set).bind(blacklist);
+const existsAsync = promisify(blocklist.exists).bind(blocklist);
+const setAsync = promisify(blocklist.set).bind(blocklist);
 
 function geraTokenHash(token) {
   return createHash("sha256").update(token).digest("hex");
@@ -14,7 +14,7 @@ module.exports = {
     const dataExpiracao = jwt.decode(token).exp;
     const tokenHash = geraTokenHash(token);
     await setAsync(tokenHash, "");
-    blacklist.expireAt(token, dataExpiracao);
+    blocklist.expireAt(token, dataExpiracao);
   },
   contemToken: async (token) => {
     const tokenHash = geraTokenHash(token);
