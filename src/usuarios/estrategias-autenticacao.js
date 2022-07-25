@@ -5,7 +5,7 @@ const { InvalidArgumentError } = require("../erros");
 const bcrypt = require("bcrypt");
 const BearerStrategy = require("passport-http-bearer").Strategy;
 const jwt = require("jsonwebtoken");
-const blocklist = require("../../redis/manipula-blocklist");
+const blocklist = require("../../redis/blocklist-access-token");
 
 function verificaUsuario(usuario) {
   if (!usuario) {
