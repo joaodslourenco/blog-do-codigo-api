@@ -1,4 +1,4 @@
-const promisify = require("util");
+const { promisify } = require("util");
 
 module.exports = (lista) => {
   const setAsync = promisify(lista.set).bind(lista);
@@ -9,7 +9,7 @@ module.exports = (lista) => {
   return {
     async adiciona(chave, valor, dataExpiracao) {
       await setAsync(chave, valor);
-      lista.expireAt(chave, dataExpiracao);
+      lista.expireat(chave, dataExpiracao);
     },
     async buscaValor(chave) {
       return getAsync(chave);
