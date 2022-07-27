@@ -63,6 +63,15 @@ module.exports = {
       res.status(500).json({ erro: erro.message });
     }
   },
+  async verificaEmail(req, res) {
+    try {
+      const usuario = await Usuario.buscaPorId(req.params.id);
+      await usuario.verificaEmail();
+      res.status(200).json();
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
 
   async deleta(req, res) {
     try {
