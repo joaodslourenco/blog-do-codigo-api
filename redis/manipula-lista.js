@@ -1,6 +1,6 @@
-const { promisify } = require("util");
+const { promisify } = require('util');
 
-module.exports = (lista) => {
+module.exports = lista => {
   const setAsync = promisify(lista.set).bind(lista);
   const existsAsync = promisify(lista.exists).bind(lista);
   const getAsync = promisify(lista.get).bind(lista);
@@ -11,15 +11,18 @@ module.exports = (lista) => {
       await setAsync(chave, valor);
       lista.expireat(chave, dataExpiracao);
     },
+
     async buscaValor(chave) {
       return getAsync(chave);
     },
+
     async contemChave(chave) {
       const resultado = await existsAsync(chave);
       return resultado === 1;
     },
+
     async deleta(chave) {
       await delAsync(chave);
-    },
+    }
   };
 };
