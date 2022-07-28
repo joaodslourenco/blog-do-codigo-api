@@ -6,7 +6,13 @@ module.exports = (app) => {
   app
     .route("/post")
     .get(middlewaresAutenticacao.bearer, postsControlador.lista)
-    .post(middlewaresAutenticacao.bearer, postsControlador.adiciona);
+    .post(
+      [
+        middlewaresAutenticacao.bearer,
+        middlewaresAutorizacao(["admin", "editor"]),
+      ],
+      postsControlador.adiciona,
+    );
 
   app
     .route("/post/:id")
