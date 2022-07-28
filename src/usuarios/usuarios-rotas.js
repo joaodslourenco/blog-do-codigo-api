@@ -1,35 +1,42 @@
-const usuariosControlador = require('./usuarios-controlador')
-const middlewaresAutenticacao = require('./middlewares-autenticacao')
+const usuariosControlador = require("./usuarios-controlador");
+const middlewaresAutenticacao = require("./middlewares-autenticacao");
+const middlewaresAutorizacao = require("../middlewares/autorizacao");
 
-module.exports = app => {
+module.exports = (app) => {
   app
-    .route('/usuario/atualiza_token')
-    .post(middlewaresAutenticacao.refresh, usuariosControlador.login)
-
-  app
-    .route('/usuario/login')
-    .post(middlewaresAutenticacao.local, usuariosControlador.login)
+    .route("/usuario/atualiza_token")
+    .post(middlewaresAutenticacao.refresh, usuariosControlador.login);
 
   app
-    .route('/usuario/logout')
+    .route("/usuario/login")
+    .post(middlewaresAutenticacao.local, usuariosControlador.login);
+
+  app
+    .route("/usuario/logout")
     .post(
       [middlewaresAutenticacao.refresh, middlewaresAutenticacao.bearer],
-      usuariosControlador.logout
-    )
+      usuariosControlador.logout,
+    );
 
   app
-    .route('/usuario/verifica_email/:token')
+    .route("/usuario/verifica_email/:token")
     .get(
       middlewaresAutenticacao.verificacaoEmail,
-      usuariosControlador.verificaEmail
-    )
+      usuariosControlador.verificaEmail,
+    );
 
   app
-    .route('/usuario')
+    .route("/usuario")
     .post(usuariosControlador.adiciona)
-    .get(usuariosControlador.lista)
+    .get(
+      [
+        middlewaresAutenticacao.bearer,
+        middlewaresAutorizacao("usuario", "readAny"),
+      ],
+      usuariosControlador.lista,
+    );
 
   app
-    .route('/usuario/:id')
-    .delete(middlewaresAutenticacao.bearer, usuariosControlador.deleta)
-}
+    .route("/usuario/:id")
+    .delete(middlewaresAutenticacao.bearer, usuariosControlador.deleta);
+};

@@ -1,9 +1,16 @@
-module.exports = (cargosObrigatorios) => (req, res, next) => {
-  if (cargosObrigatorios.indexOf(req.user.cargo) === -1) {
-    console.log("rota bloqueada");
+const controle = require("../controleDeAcesso");
+
+module.exports = (entidade, acao) => (req, res, next) => {
+  const permissoesDoCargo = controle.can(req.user.cargo);
+  const permissao = permissoesDoCargo[acao](entidade);
+  if (!permissao.granted) {
     res.status(403).end();
     return;
   }
+
+  req.acesso = {
+    atributos: permissao.attributes,
+  };
 
   next();
 };
