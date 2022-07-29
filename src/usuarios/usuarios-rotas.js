@@ -25,16 +25,13 @@ module.exports = (app) => {
       usuariosControlador.verificaEmail,
     );
 
-  app
-    .route("/usuario")
-    .post(usuariosControlador.adiciona)
-    .get(
-      [
-        middlewaresAutenticacao.bearer,
-        middlewaresAutorizacao("usuario", "readAny"),
-      ],
-      usuariosControlador.lista,
-    );
+  app.route("/usuario").post(usuariosControlador.adiciona).get(
+    [
+      middlewaresAutenticacao.bearer,
+      // middlewaresAutorizacao("usuario", "readAny"),
+    ],
+    usuariosControlador.lista,
+  );
 
   app
     .route("/usuario/:id")

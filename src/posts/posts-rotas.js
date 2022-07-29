@@ -7,20 +7,20 @@ module.exports = (app) => {
     .route("/post")
     .get(middlewaresAutenticacao.bearer, postsControlador.lista)
     .post(
-      [
-        middlewaresAutenticacao.bearer,
-        middlewaresAutorizacao(["admin", "editor"]),
-      ],
+      [middlewaresAutenticacao.bearer, middlewaresAutorizacao("post", "criar")],
       postsControlador.adiciona,
     );
 
   app
     .route("/post/:id")
-    .get(middlewaresAutenticacao.bearer, postsControlador.obterDetalhes)
+    .get(
+      [middlewaresAutenticacao.bearer, middlewaresAutorizacao("post", "ler")],
+      postsControlador.obterDetalhes,
+    )
     .delete(
       [
         middlewaresAutenticacao.bearer,
-        middlewaresAutorizacao(["admin", "editor"]),
+        middlewaresAutorizacao("post", "remover"),
       ],
       postsControlador.remover,
     );
