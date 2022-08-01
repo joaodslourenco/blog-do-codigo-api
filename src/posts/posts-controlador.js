@@ -1,5 +1,6 @@
 const Post = require("./posts-modelo");
 const { InvalidArgumentError } = require("../erros");
+const ConversorPost = require("../conversores");
 
 module.exports = {
   async adiciona(req, res) {
@@ -20,14 +21,16 @@ module.exports = {
   async lista(req, res) {
     try {
       let posts = await Post.listarTodos();
-
+      const conversor = new ConversorPost("json");
       if (!req.estaAutenticado) {
-        posts = posts.map((post) => ({
-          titulo: post.titulo,
-          conteudo: post.conteudo,
-        }));
+        posts = posts.map((post) => {
+          post.conteudo =
+            post.conteudo.substr(0, 10) +
+            "... Torne-se assinante para ler o restante do post.";
+          return post;
+        });
+        res.send(conversor.converter(posts));
       }
-      res.json(posts);
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
     }

@@ -12,6 +12,14 @@ require("./redis/allowlist-refresh-token");
 const jwt = require("jsonwebtoken");
 
 const routes = require("./rotas");
+
+app.use((req, res, next) => {
+  res.set({
+    "Content-Type": "application/json",
+  });
+  next();
+});
+
 routes(app);
 
 app.use((error, req, res, next) => {
