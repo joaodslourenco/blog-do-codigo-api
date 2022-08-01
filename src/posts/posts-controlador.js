@@ -44,7 +44,12 @@ module.exports = {
 
   async remover(req, res) {
     try {
-      const post = await Post.buscaPorId(req.params.id, req.user.id);
+      let post;
+      if (req.acesso.todos.permitido === true) {
+        post = await Post.buscaPorId(req.params.id);
+      } else if (req.acesso.apenasSeu.permitido === true) {
+        post = await Post.buscaPorId(req.params.id, req.user.id);
+      }
       post.remover();
       res.status(204);
       res.end();
