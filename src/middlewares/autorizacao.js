@@ -25,8 +25,7 @@ module.exports = (entidade, acao) => (req, res, next) => {
     permissaoTodos.granted === false &&
     permissaoApenasSeu.granted === false
   ) {
-    res.status(403).end();
-    return;
+    return res.status(403).end();
   }
 
   req.acesso = {

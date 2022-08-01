@@ -48,7 +48,7 @@ module.exports = {
       if (req.acesso.todos.permitido === true) {
         post = await Post.buscaPorId(req.params.id);
       } else if (req.acesso.apenasSeu.permitido === true) {
-        post = await Post.buscaPorId(req.params.id, req.user.id);
+        post = await Post.buscaPorIdAutor(req.params.id, req.user.id);
       }
       post.remover();
       res.status(204);
