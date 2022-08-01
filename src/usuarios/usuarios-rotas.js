@@ -28,12 +28,19 @@ module.exports = (app) => {
   app.route("/usuario").post(usuariosControlador.adiciona).get(
     [
       middlewaresAutenticacao.bearer,
-      // middlewaresAutorizacao("usuario", "readAny"),
+      // middlewaresAutorizacao("usuario", "ler"),
     ],
     usuariosControlador.lista,
   );
 
   app
     .route("/usuario/:id")
-    .delete(middlewaresAutenticacao.bearer, usuariosControlador.deleta);
+    .delete(
+      [
+        middlewaresAutenticacao.bearer,
+        middlewaresAutenticacao.local,
+        middlewaresAutorizacao("usuario", "remover"),
+      ],
+      usuariosControlador.deleta,
+    );
 };
