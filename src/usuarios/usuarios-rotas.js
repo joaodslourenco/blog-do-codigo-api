@@ -25,13 +25,13 @@ module.exports = (app) => {
       usuariosControlador.verificaEmail,
     );
 
-  app.route("/usuario").post(usuariosControlador.adiciona).get(
-    [
-      middlewaresAutenticacao.bearer,
-      // middlewaresAutorizacao("usuario", "ler"),
-    ],
-    usuariosControlador.lista,
-  );
+  app
+    .route("/usuario")
+    .post(usuariosControlador.adiciona)
+    .get(
+      [middlewaresAutenticacao.bearer, middlewaresAutorizacao("user", "ler")],
+      usuariosControlador.lista,
+    );
 
   app
     .route("/usuario/:id")
@@ -39,7 +39,7 @@ module.exports = (app) => {
       [
         middlewaresAutenticacao.bearer,
         middlewaresAutenticacao.local,
-        middlewaresAutorizacao("usuario", "remover"),
+        middlewaresAutorizacao("user", "remover"),
       ],
       usuariosControlador.deleta,
     );
