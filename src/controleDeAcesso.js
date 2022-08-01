@@ -16,7 +16,7 @@ controle
   .readAny("post")
   .createAny("post")
   .deleteAny("post")
-  .readAny("usuario")
-  .deleteAny("usuario");
+  .readAny("user")
+  .deleteAny("user");
 
 module.exports = controle;
