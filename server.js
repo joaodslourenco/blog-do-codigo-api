@@ -2,7 +2,11 @@ require("dotenv").config();
 const app = require("./app");
 const port = 3000;
 require("./database");
-const { InvalidArgumentError } = require("./src/erros");
+const {
+  InvalidArgumentError,
+  NotFoundError,
+  NotAuthorizedError,
+} = require("./src/erros");
 require("./redis/blocklist-access-token");
 require("./redis/allowlist-refresh-token");
 const jwt = require("jsonwebtoken");
@@ -16,6 +20,13 @@ app.use((error, req, res, next) => {
     message: error.message,
   };
 
+  if (error instanceof NotFoundError) {
+    status = 404;
+  }
+
+  if (error instanceof NotAuthorizedError) {
+    status = 401;
+  }
   if (error instanceof InvalidArgumentError) {
     status = 400;
   }
@@ -27,6 +38,7 @@ app.use((error, req, res, next) => {
     status = 401;
     corpo.expiradoEm = error.expiredAt;
   }
+
   res.status(status).json(corpo);
 });
 
