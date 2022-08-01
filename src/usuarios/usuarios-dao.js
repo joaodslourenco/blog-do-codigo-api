@@ -25,17 +25,9 @@ module.exports = {
     }
   },
 
-  async buscaPorId(id, idAutor) {
+  async buscaPorId(id) {
     try {
-      let instrucoes = "SELECT * FROM usuarios WHERE id = ?";
-      const parametros = [id];
-
-      idAutor = Number(idAutor);
-      if (isNaN(idAutor) === false) {
-        instrucoes = `${instrucoes} AND autor = ?`;
-        parametros.push(idAutor);
-      }
-      return await dbGet(instrucoes, parametros);
+      return await dbGet("SELECT * FROM usuarios WHERE id = ?", [id]);
     } catch (erro) {
       throw new InternalServerError("Não foi possível encontrar o usuário!");
     }
