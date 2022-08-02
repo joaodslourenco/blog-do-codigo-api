@@ -1,6 +1,5 @@
 const Usuario = require("./usuarios-modelo");
-const { InvalidArgumentError } = require("../erros");
-
+const { ConversorUsuario } = require("../conversores");
 const tokens = require("./tokens");
 const { EmailVerificacao } = require("./emails");
 
@@ -57,8 +56,14 @@ module.exports = {
 
   async lista(req, res, next) {
     try {
+      const conversor = new ConversorUsuario(
+        "json",
+        req.acesso.todos.permitido
+          ? req.acesso.todos.atributos
+          : req.acesso.apenasSeu.atributos,
+      );
       const usuarios = await Usuario.lista();
-      res.json(usuarios);
+      res.send(conversor.converter(usuarios));
     } catch (erro) {
       next(erro);
     }
