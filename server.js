@@ -15,10 +15,13 @@ const routes = require("./rotas");
 
 app.use((req, res, next) => {
   const accept = req.getHeader("Accept");
-  if (accept.indexOf(‘application/json’) === -1 || accept.indexOf('*/*') === -1) {
-    resposta.status(406)
-    resposta.end()
-    return
+  if (
+    accept.indexOf("application/json") === -1 ||
+    accept.indexOf("*/*") === -1
+  ) {
+    resposta.status(406);
+    resposta.end();
+    return;
   }
   res.set({
     "Content-Type": "application/json",
