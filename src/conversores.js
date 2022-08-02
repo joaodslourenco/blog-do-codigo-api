@@ -49,4 +49,12 @@ class ConversorUsuario extends Conversor {
   }
 }
 
-module.exports = { ConversorPost, ConversorUsuario };
+class ConversorErro extends Conversor {
+  constructor(tipoDeConteudo) {
+    super();
+    this.tipoDeConteudo = tipoDeConteudo;
+    this.camposPublicos = ["message", "mensagem"];
+  }
+}
+
+module.exports = { ConversorPost, ConversorUsuario, ConversorErro };

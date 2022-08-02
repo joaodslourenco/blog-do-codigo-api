@@ -10,7 +10,7 @@ const {
 require("./redis/blocklist-access-token");
 require("./redis/allowlist-refresh-token");
 const jwt = require("jsonwebtoken");
-
+const { ConversorErro } = require("./src/conversores");
 const routes = require("./rotas");
 
 app.use((req, res, next) => {
@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 routes(app);
 
 app.use((error, req, res, next) => {
+  const conversor = new ConversorErro("json");
   let status = 500;
   const corpo = {
     message: error.message,
@@ -47,7 +48,7 @@ app.use((error, req, res, next) => {
     corpo.expiradoEm = error.expiredAt;
   }
 
-  res.status(status).json(corpo);
+  res.status(status).send(conversor.converter(corpo));
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
