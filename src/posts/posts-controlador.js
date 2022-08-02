@@ -29,8 +29,8 @@ module.exports = {
             "... Torne-se assinante para ler o restante do post.";
           return post;
         });
-        res.send(conversor.converter(posts));
       }
+      res.send(conversor.converter(posts));
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
     }
