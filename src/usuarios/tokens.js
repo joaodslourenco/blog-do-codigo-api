@@ -113,5 +113,8 @@ module.exports = {
     criarToken(id) {
       return criaTokenOpaco(id, this.expiracao, this.lista);
     },
+    verifica(token) {
+      return verificaTokenOpaco(token, this.nome, this.lista);
+    },
   },
 };

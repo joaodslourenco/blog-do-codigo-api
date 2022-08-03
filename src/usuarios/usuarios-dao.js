@@ -69,4 +69,17 @@ module.exports = {
       throw new InternalServerError("Erro ao deletar o usuário");
     }
   },
+
+  async atualizarSenha(senha, id) {
+    try {
+      await dbRun("UPDATE usuarios SET senhaHash = ? WHERE id = ?", [
+        senha,
+        id,
+      ]);
+    } catch (erro) {
+      throw new InternalServerError(
+        "Erro ao tentar atualizar a senha do usuário!",
+      );
+    }
+  },
 };
