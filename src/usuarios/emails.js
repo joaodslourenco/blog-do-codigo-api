@@ -57,4 +57,15 @@ class EmailRedefinicaoSenha extends Email {
   }
 }
 
-module.exports = { EmailVerificacao, EmailRedefinicaoSenha };
+class EmailPostCriado extends Email {
+  constructor(usuario, tituloPost) {
+    super();
+    this.from = '"Blog do Código" <noreply@blogdocodigo.com.br>';
+    this.to = usuario.email;
+    this.subject = "Seu post foi adicionado com sucesso!";
+    this.text = `Olá! Você criou um novo post no blog e ele já foi publicado! Título: ${tituloPost}`;
+    this.html = `<h1>Olá!</h1> Você criou um novo post no blog e ele já foi publicado!<br /> <br /> Título: ${tituloPost}`;
+  }
+}
+
+module.exports = { EmailVerificacao, EmailRedefinicaoSenha, EmailPostCriado };

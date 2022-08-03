@@ -1,6 +1,7 @@
 const Post = require("./posts-modelo");
 const { InvalidArgumentError } = require("../erros");
 const { ConversorPost } = require("../conversores");
+const { EmailPostCriado } = require("../usuarios/emails");
 
 module.exports = {
   async adiciona(req, res) {
@@ -8,6 +9,9 @@ module.exports = {
       req.body.autor = req.user.id;
       const post = new Post(req.body);
       await post.adiciona();
+
+      const email = new EmailPostCriado(req.user, post.titulo);
+      await email.enviaEmail();
 
       res.status(201).json(post);
     } catch (erro) {
